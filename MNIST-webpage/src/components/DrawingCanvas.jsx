@@ -54,39 +54,36 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
 
   const preprocessAndSend = async () => {
     const canvas = canvasRef.current;
+  
+    // Resize to 28x28 on a temporary canvas
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
-
-    // Resize and convert to grayscale
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
-    const imageData = tempCtx.getImageData(0, 0, 28, 28);
-    const grayData = [];
-
-    for (let i = 0; i < imageData.data.length; i += 4) {
-      const r = imageData.data[i];
-      const g = imageData.data[i + 1];
-      const b = imageData.data[i + 2];
-      // Grayscale conversion: average method
-      const gray = (r + g + b) / 3;
-      grayData.push(gray);
-    }
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/predict_image`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ file: grayData }),
-      });      
-
-      const result = await response.json();
-      setPrediction(result.prediction);
-      setConfidence(result.confidence);
-    } catch (error) {
-      console.error('Prediction error:', error);
-    }
+  
+    // Convert resized canvas to a PNG Blob
+    tempCanvas.toBlob(async (blob) => {
+      if (!blob) return console.error('Blob conversion failed.');
+  
+      const formData = new FormData();
+      formData.append('file', blob, 'digit.png'); // 'file' must match backend's parameter name
+  
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/predict_image`, {
+          method: 'POST',
+          body: formData, // Don't set Content-Type manually
+        });
+  
+        const result = await response.json();
+        setPrediction(result.prediction);
+        setConfidence(result.confidence);
+      } catch (error) {
+        console.error('Prediction error:', error);
+      }
+    }, 'image/png');
   };
+  
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
