@@ -3,8 +3,7 @@ import '/src/global.css'
 const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [prediction, setPrediction] = useState(null);
-  const [confidence , setConfidence] = useState(null);
+  const [predictions, setPredictions] = useState(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -87,8 +86,10 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
         }
     
         const result = await response.json();
-        setPrediction(result.CNN.prediction.class);
-        setConfidence(result.CNN.prediction.confidence);
+        setPredictions({
+          cnn: result.CNN.prediction,
+          resnet: result.ResNet.prediction,
+        });
       } catch (error) {
         console.error('Prediction error:', error);
       }
@@ -129,13 +130,15 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
         </button>
       </div>
   
-      {prediction !== null && (
-        <div className="mt-4 text-center">
+      {predictions && (
+        <div className="mt-4 text-center space-y-2">
           <p className="text-lg text-gray-700">
-            Prediction: <span className="font-bold text-black">{prediction}</span>
+            <span className="font-semibold">CNN Prediction:</span> {predictions.cnn.class} <br />
+            <span className="text-sm text-gray-600">Confidence: {(predictions.cnn.confidence * 100).toFixed(2)}%</span>
           </p>
-          <p className="text-md text-gray-600">
-            Confidence: <span className="font-medium">{(confidence * 100).toFixed(2)}%</span>
+          <p className="text-lg text-gray-700">
+            <span className="font-semibold">ResNet Prediction:</span> {predictions.resnet.class} <br />
+            <span className="text-sm text-gray-600">Confidence: {(predictions.resnet.confidence * 100).toFixed(2)}%</span>
           </p>
         </div>
       )}
