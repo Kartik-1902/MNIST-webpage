@@ -55,35 +55,44 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
   const preprocessAndSend = async () => {
     const canvas = canvasRef.current;
   
-    // Resize to 28x28 on a temporary canvas
+    // Create a temporary canvas and resize to 28x28
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
   
-    // Convert resized canvas to a PNG Blob
+    // Convert to image blob (PNG)
     tempCanvas.toBlob(async (blob) => {
-      if (!blob) return console.error('Blob conversion failed.');
+      if (!blob || blob.size === 0) {
+        console.error("Blob is empty or invalid.");
+        return;
+      }
   
       const formData = new FormData();
-      formData.append('file', blob, 'digit.png'); // 'file' must match backend's parameter name
+      formData.append('file', blob, 'digit.png');  // ✅ backend expects field name "file"
   
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/predict_image`, {
           method: 'POST',
-          body: formData, // Don't set Content-Type manually
+          body: formData,  // ✅ Do not set Content-Type manually
         });
   
+        if (!response.ok) {
+          const errorData = await response.text();
+          console.error('Prediction failed:', response.status, errorData);
+          return;
+        }
+  
         const result = await response.json();
-        setPrediction(result.prediction);
-        setConfidence(result.confidence);
+        setPrediction(result.CNN.prediction.class);
+        setConfidence(result.CNN.prediction.confidence);
       } catch (error) {
         console.error('Prediction error:', error);
       }
     }, 'image/png');
   };
-  
+   
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
