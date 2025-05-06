@@ -47,7 +47,7 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
-    setPrediction(null);
+    setPredictions(null);
     if (onClear) onClear();
   };
 
