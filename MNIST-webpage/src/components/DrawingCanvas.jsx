@@ -64,26 +64,28 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
   
     // Convert to image blob (PNG)
     tempCanvas.toBlob(async (blob) => {
+      console.log('Blob size:', blob.size);  // Check if the blob has the right size
+    
       if (!blob || blob.size === 0) {
         console.error("Blob is empty or invalid.");
         return;
       }
-  
+    
       const formData = new FormData();
-      formData.append('file', blob, 'digit.png');  // ✅ backend expects field name "file"
-  
+      formData.append('file', blob, 'digit.png');
+    
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/predict_image`, {
           method: 'POST',
-          body: formData,  // ✅ Do not set Content-Type manually
+          body: formData,  // Do not set Content-Type manually
         });
-  
+    
         if (!response.ok) {
           const errorData = await response.text();
           console.error('Prediction failed:', response.status, errorData);
           return;
         }
-  
+    
         const result = await response.json();
         setPrediction(result.CNN.prediction.class);
         setConfidence(result.CNN.prediction.confidence);
@@ -91,6 +93,7 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
         console.error('Prediction error:', error);
       }
     }, 'image/png');
+    
   };
    
 
