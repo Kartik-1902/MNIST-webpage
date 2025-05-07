@@ -122,26 +122,27 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
       />
 
       <div className="space-y-6 text-sm text-gray-300 w-full max-w-sm">
-        {predictions && (
-          <>
-            <div className="bg-[#162636] p-4 rounded-lg shadow-inner border border-[#22384d]">
-              <p className="mb-1">
-                <span className="text-white font-medium">CNN Prediction:</span> {predictions.cnn.class}
-              </p>
-              <p className="text-gray-400">
+      {predictions && (
+        <div className="w-full max-w-md mt-10 animate-fade-in-up">
+          <div className="bg-[#131e2e] border border-[#FF6500] rounded-xl p-6 shadow-xl text-center">
+            <h2 className="text-2xl font-semibold text-white mb-4 tracking-wide">
+              Predictions
+            </h2>
+            <div className="text-lg text-orange-400 font-bold mb-2">
+              CNN: {predictions.cnn.class}
+              <div className="text-sm text-gray-300">
                 Confidence: {(predictions.cnn.confidence * 100).toFixed(2)}%
-              </p>
+              </div>
             </div>
-            <div className="bg-[#162636] p-4 rounded-lg shadow-inner border border-[#22384d]">
-              <p className="mb-1">
-                <span className="text-white font-medium">ResNet Prediction:</span> {predictions.resnet.class}
-              </p>
-              <p className="text-gray-400">
+            <div className="text-lg text-orange-400 font-bold">
+              ResNet: {predictions.resnet.class}
+              <div className="text-sm text-gray-300">
                 Confidence: {(predictions.resnet.confidence * 100).toFixed(2)}%
-              </p>
+              </div>
             </div>
-          </>
-        )}
+          </div>
+        </div>
+      )}
       </div>
     </div>
 
