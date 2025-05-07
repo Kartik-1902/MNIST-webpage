@@ -12,6 +12,8 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }, []);
 
+  
+
   const startDrawing = (e) => {
     setIsDrawing(true);
     draw(e);
@@ -99,14 +101,18 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
    
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-3xl font-semibold text-gray-800 mb-6">Draw a Digit</h1>
-      
+    <div className="min-h-screen bg-gradient-to-tr from-[#0B192C] to-[#1E3E62] text-white flex flex-col items-center justify-center p-6">
+  <div className="w-full max-w-4xl bg-[#0f1a2c] rounded-2xl shadow-xl p-8 border border-[#1c2f4a]">
+    <h1 className="text-4xl font-bold text-center mb-8 tracking-wide text-glow">
+      Draw a Digit
+    </h1>
+
+    <div className="flex flex-col md:flex-row items-center justify-center gap-8">
       <canvas
         ref={canvasRef}
         width={width}
         height={height}
-        className="border-2 border-gray-500 rounded-lg shadow-md bg-black touch-none"
+        className="border border-[#3a4d6a] rounded-xl shadow-md bg-black touch-none w-[280px] h-[280px]"
         onMouseDown={startDrawing}
         onMouseUp={endDrawing}
         onMouseMove={draw}
@@ -114,35 +120,48 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
         onTouchEnd={endDrawing}
         onTouchMove={draw}
       />
-  
-      <div className="mt-6 flex space-x-4">
-        <button
-          onClick={clearCanvas}
-          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow"
-        >
-          Clear
-        </button>
-        <button
-          onClick={preprocessAndSend}
-          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow"
-        >
-          Predict
-        </button>
+
+      <div className="space-y-6 text-sm text-gray-300 w-full max-w-sm">
+        {predictions && (
+          <>
+            <div className="bg-[#162636] p-4 rounded-lg shadow-inner border border-[#22384d]">
+              <p className="mb-1">
+                <span className="text-white font-medium">CNN Prediction:</span> {predictions.cnn.class}
+              </p>
+              <p className="text-gray-400">
+                Confidence: {(predictions.cnn.confidence * 100).toFixed(2)}%
+              </p>
+            </div>
+            <div className="bg-[#162636] p-4 rounded-lg shadow-inner border border-[#22384d]">
+              <p className="mb-1">
+                <span className="text-white font-medium">ResNet Prediction:</span> {predictions.resnet.class}
+              </p>
+              <p className="text-gray-400">
+                Confidence: {(predictions.resnet.confidence * 100).toFixed(2)}%
+              </p>
+            </div>
+          </>
+        )}
       </div>
-  
-      {predictions && (
-        <div className="mt-4 text-center space-y-2">
-          <p className="text-lg text-gray-700">
-            <span className="font-semibold">CNN Prediction:</span> {predictions.cnn.class} <br />
-            <span className="text-sm text-gray-600">Confidence: {(predictions.cnn.confidence * 100).toFixed(2)}%</span>
-          </p>
-          <p className="text-lg text-gray-700">
-            <span className="font-semibold">ResNet Prediction:</span> {predictions.resnet.class} <br />
-            <span className="text-sm text-gray-600">Confidence: {(predictions.resnet.confidence * 100).toFixed(2)}%</span>
-          </p>
-        </div>
-      )}
     </div>
+
+    <div className="mt-10 flex justify-center gap-6">
+      <button
+        onClick={clearCanvas}
+        className="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg"
+      >
+        Clear
+      </button>
+      <button
+        onClick={preprocessAndSend}
+        className="px-6 py-2 rounded-lg bg-[#FF6500] hover:bg-[#E65A00] transition-all duration-300 shadow-md hover:shadow-lg"
+      >
+        Predict
+      </button>
+    </div>
+  </div>
+</div>
+
   );
   
 };
