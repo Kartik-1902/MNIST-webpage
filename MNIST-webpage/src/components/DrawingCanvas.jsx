@@ -130,14 +130,30 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
             </h2>
             <div className="text-lg text-orange-400 font-bold mb-2">
               CNN: {predictions.cnn.class}
-              <div className="text-sm text-gray-300">
-                Confidence: {(predictions.cnn.confidence * 100).toFixed(2)}%
+              <div className="mt-2">
+                <div className="relative h-4 w-full bg-[#1e2b40] rounded-full overflow-hidden">
+                  <div
+                      className="absolute top-0 left-0 h-full bg-orange-400 shadow-[0_0_8px_#FF6500] transition-all duration-500"
+                      style={{ width: `${(predictions.cnn.confidence * 100).toFixed(0)}%` }}
+                  ></div>
+                </div>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {(predictions.cnn.confidence * 100).toFixed(2)}% confidence
+                  </p>
               </div>
             </div>
             <div className="text-lg text-orange-400 font-bold">
               ResNet: {predictions.resnet.class}
-              <div className="text-sm text-gray-300">
-                Confidence: {(predictions.resnet.confidence * 100).toFixed(2)}%
+              <div className="mt-2">
+                <div className="relative h-4 w-full bg-[#1e2b40] rounded-full overflow-hidden">
+                  <div
+                      className="absolute top-0 left-0 h-full bg-orange-400 shadow-[0_0_8px_#FF6500] transition-all duration-500"
+                      style={{ width: `${(predictions.resnet.confidence * 100).toFixed(0)}%` }}
+                  ></div>
+                </div>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {(predictions.resnet.confidence * 100).toFixed(2)}% confidence
+                  </p>
               </div>
             </div>
           </div>
