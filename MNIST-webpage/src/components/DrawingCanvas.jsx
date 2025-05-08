@@ -180,7 +180,7 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
         <div className="w-10 h-10 border-4 border-white/20 border-t-[#FF6500] rounded-full animate-spin mb-4" />
     
         <p className="text-white text-sm animate-pulse">
-          {slowStart ? 'Waking up the server, please wait...' : 'Processing prediction...'}
+          {slowStart ? 'Waking up the server... might few minutes' : 'Processing prediction...'}
         </p>
       </div>
     )}
