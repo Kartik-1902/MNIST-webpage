@@ -4,6 +4,7 @@
 This project is a **React-based web application** that allows users to draw a digit (0–9) on a canvas and get real-time predictions from two machine learning models — **CNN** and **ResNet** — hosted on a backend server.
 
 🧠 The backend handles ML inference while the frontend provides an intuitive and responsive drawing experience.
+-[See it here](https://github.com/bismuth01/mnist-api)
 
 ---
 
