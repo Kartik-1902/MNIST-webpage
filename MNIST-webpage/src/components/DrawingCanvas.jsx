@@ -4,7 +4,9 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [predictions, setPredictions] = useState(null);
-
+  const [isPredicting, setIsPredicting] = useState(false);
+  const [slowStart, setSlowStart] = useState(false);
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -56,48 +58,58 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
   const preprocessAndSend = async () => {
     const canvas = canvasRef.current;
   
-    // Create a temporary canvas and resize to 28x28
+    setIsPredicting(true);
+    setSlowStart(false);
+  
+    // Detect cold start if it takes longer than 4 seconds
+    const slowTimer = setTimeout(() => setSlowStart(true), 4000);
+  
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = 28;
     tempCanvas.height = 28;
     const tempCtx = tempCanvas.getContext('2d');
     tempCtx.drawImage(canvas, 0, 0, 28, 28);
   
-    // Convert to image blob (PNG)
     tempCanvas.toBlob(async (blob) => {
-      console.log('Blob size:', blob.size);  // Check if the blob has the right size
-    
       if (!blob || blob.size === 0) {
         console.error("Blob is empty or invalid.");
+        clearTimeout(slowTimer);
+        setIsPredicting(false);
         return;
       }
-    
+  
       const formData = new FormData();
       formData.append('file', blob, 'digit.png');
-    
+  
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/predict_image`, {
           method: 'POST',
-          body: formData,  // Do not set Content-Type manually
+          body: formData,
         });
-    
+  
+        clearTimeout(slowTimer);
+  
         if (!response.ok) {
           const errorData = await response.text();
           console.error('Prediction failed:', response.status, errorData);
           return;
         }
-    
+  
         const result = await response.json();
+  
         setPredictions({
           cnn: result.CNN.prediction,
           resnet: result.ResNet.prediction,
         });
       } catch (error) {
         console.error('Prediction error:', error);
+      } finally {
+        setIsPredicting(false);
+        setSlowStart(false);
       }
     }, 'image/png');
-    
   };
+  
    
 
   return (
@@ -161,6 +173,17 @@ const DrawingCanvas = ({ width = 280, height = 280, onClear }) => {
       )}
       </div>
     </div>
+
+    {isPredicting && (
+      <div className="flex flex-col items-center mt-10">
+        {/* Spinner */}
+        <div className="w-10 h-10 border-4 border-white/20 border-t-[#FF6500] rounded-full animate-spin mb-4" />
+    
+        <p className="text-white text-sm animate-pulse">
+          {slowStart ? 'Waking up the server, please wait...' : 'Processing prediction...'}
+        </p>
+      </div>
+    )}
 
     <div className="mt-10 flex justify-center gap-6">
       <button
