@@ -1,7 +1,5 @@
 ![Screenshot 2025-05-08 222002](https://github.com/user-attachments/assets/e5632d81-f688-4e89-8aaf-64b6f83783d4)# 🧠 Handwritten Digit Recognition — Real-Time ML in Your Browser
 
-![screenshot](![Uploading Screenshot 2025-05-08 222002.png…]()) 
-
 A sleek, interactive web application that lets users draw digits in the browser and receive instant predictions from two powerful machine learning models — **CNN** and **ResNet** — deployed on a cloud-based backend.
 
 Designed with a modern, futuristic UI and built for both performance and UX. This project showcases **full-stack integration**, **machine learning deployment**, and **real-time canvas interaction**, all wrapped in a responsive, production-ready interface.
