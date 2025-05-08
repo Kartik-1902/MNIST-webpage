@@ -1,77 +1,47 @@
-![Screenshot 2025-05-08 222002](https://github.com/user-attachments/assets/e5632d81-f688-4e89-8aaf-64b6f83783d4)# 🧠 Handwritten Digit Recognition — Real-Time ML in Your Browser
+![Screenshot 2025-05-08 222002](https://github.com/user-attachments/assets/faa1b77a-d52c-4b4c-89de-64c5d0f22d8a)
+# ✏️ Handwritten Digit Classifier
 
-A sleek, interactive web application that lets users draw digits in the browser and receive instant predictions from two powerful machine learning models — **CNN** and **ResNet** — deployed on a cloud-based backend.
+This project is a **React-based web application** that allows users to draw a digit (0–9) on a canvas and get real-time predictions from two machine learning models — **CNN** and **ResNet** — hosted on a backend server.
 
-Designed with a modern, futuristic UI and built for both performance and UX. This project showcases **full-stack integration**, **machine learning deployment**, and **real-time canvas interaction**, all wrapped in a responsive, production-ready interface.
+🧠 The backend handles ML inference while the frontend provides an intuitive and responsive drawing experience.
 
 ---
 
+## 🚀 Features
 
-## 🚀 Live Demo
-
-> ✨ [Try it now](https://www.linkedin.com/in/kartik-dhingani-335b66244/) — Draw a digit, and watch the magic unfold.
+- 🖌️ Canvas-based digit input (mouse + touch supported)
+- 📈 Predictions from **CNN** and **ResNet**
+- ⌛ Smooth loading animations, including cold-start awareness
+- 📊 Visual confidence indicators (animated bars)
+- ✨ Sleek, futuristic UI with Tailwind CSS + animations
+- 📱 Fully responsive and mobile-ready
 
 ---
 
 ## 🛠️ Tech Stack
 
-### 🧩 Frontend
-- **React** + **TailwindCSS** — for modular, modern UI
-- **Canvas API** — for real-time drawing and image capture
-- **Anime.js** — subtle, glowing text animations
-- **Responsive & Mobile-friendly** design
-
-### 🧠 Backend
--[See it here]()
+**Frontend:** React + Vite + Tailwind CSS  
+**Backend:** Python (FastAPI) + ML models (CNN & ResNet)  
+**Communication:** REST API (fetch)  
+**Deployment:** Render (backend)
 
 ---
 
-## 🔍 Features
+## 📦 Installation-frontend
 
-✅ Draw using a canvas — mouse or touch  
-✅ Preprocessing & automatic scaling to `28x28`  
-✅ Fast, accurate predictions from **two ML models**  
-✅ Loading animations & progress indicators  
-✅ Cold-start server detection with user-friendly messages  
-✅ Highlighted prediction section with visual confidence bars  
-✅ Fully responsive layout — optimized for desktop & mobile  
-✅ Codebase ready for expansion (auth, datasets, uploads, etc.)
-
----
-
-## 💡 Why This Project?
-
-This isn't just another digit recognizer — it's a demonstration of:
-- **End-to-end system design**
-- **Model deployment best practices**
-- **Performance-aware UX thinking**
-- **Responsive frontend architecture**
-
-Whether you're a recruiter, engineer, or tech enthusiast — this project shows my ability to blend **data science, design, and development** into a real-world application.
-
----
-
-## 🧑‍💻 About Me
-
-Hi, I'm **[Kartik Dhingani]**, a developer passionate about building intelligent, intuitive products. I enjoy trying to find solution to real-world problems using code, machine learning, and thoughtful design.
-
-📬 Let's connect: [LinkedIn](https://www.linkedin.com/in/kartik-dhingani-335b66244/) | [Email](mailto:kartikdhingani0711@gmail.com)
-
----
-
-## 📦 Running Locally
+### 1. Clone the Repository
 
 ```bash
-# Clone the repo
-git clone https://github.com/yourusername/MNIST_webpage.git
-cd MNIST_webpage
-
-# Move into the React frontend directory
-cd MNIST_webpage
-
-# Install dependencies
+git clone https://github.com/Kartik-1902/MNIST_webpage.git
+cd MNIST_webpage/MNIST_webpage
 npm install
-
-# Start the development server
+mkdir .env-local
+```
+Copy this into your .env-local : 
+```bash
+VITE_API_BASE_URL=http://<your-backend-ip>
+```
+Run this command in root folder:
+```bash
 npm run dev
-
+```
